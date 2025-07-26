@@ -1,26 +1,44 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require 'rubocop'
+require 'rubocop/rspec/support'
+require_relative '../../../../../../lib/rubocop/cop/chef/style/use_platform_helpers'
 
-describe RuboCop::Cop::Chef::Style::UseNodeNormal do
-  subject(:cop) { described_class.new }
+RSpec.describe RuboCop::Cop::Chef::Style::UsePlatformHelpers, :config do
+  include RuboCop::RSpec::ExpectOffense
 
-  it 'registers an offense when using node.normal' do
+  subject(:cop) { described_class.new(config) }
+
+  let(:config) { RuboCop::Config.new }
+
+  it 'registers an offense for node[platform] == value' do
     expect_offense(<<~RUBY)
-      node.normal['foo'] = 'bar'
-           ^^^^^^ Avoid using `node.normal`. It persists data across Chef runs and is discouraged. Use `node.default` or `node.override` instead.
-    RUBY
-
-    expect_correction(<<~RUBY)
-      node.default['foo'] = 'bar'
+      node['platform'] == 'ubuntu'
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use the `platform?` or `platform_family?` helpers instead of manually comparing node['platform'] or node['platform_family'] for better readability and maintainability.
     RUBY
   end
 
-  it 'does not register an offense when using node.default' do
-    expect_no_offenses("node.default['foo'] = 'bar'")
+  it 'registers an offense for node[platform_family] != value' do
+    expect_offense(<<~RUBY)
+      node['platform_family'] != 'debian'
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use the `platform?` or `platform_family?` helpers instead of manually comparing node['platform'] or node['platform_family'] for better readability and maintainability.
+    RUBY
   end
 
-  it 'does not register an offense when using node.override' do
-    expect_no_offenses("node.override['foo'] = 'bar'")
+  it 'registers an offense for include? platform_family array' do
+    expect_offense(<<~RUBY)
+      %w(rhel suse).include?(node['platform_family'])
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use the `platform?` or `platform_family?` helpers instead of manually comparing node['platform'] or node['platform_family'] for better readability and maintainability.
+    RUBY
+  end
+
+  it 'registers an offense when using node[platform] in a case statement' do
+    expect_offense(<<~RUBY)
+      case node['platform']
+           ^^^^^^^^^^^^^^^^^ Use the `platform?` or `platform_family?` helpers instead of manually comparing node['platform'] or node['platform_family'] for better readability and maintainability.
+      when 'ubuntu'
+        do_something
+      end
+    RUBY
   end
 end
