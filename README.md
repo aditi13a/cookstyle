@@ -127,6 +127,15 @@ AllCops:
 
 We'd love to have your help in developing Cookstyle. See our [Contributing Guide](https://github.com/chef/chef/blob/main/CONTRIBUTING.md) for more information on contributing to Chef projects. There's also a [Developer Guide](./DEVELOPER_GUIDE.md) for Cookstyle that outlines how the configs work and how you can upgrade the RuboCop engine.
 
+
+---
+
+## 🆕 New Cops Added by the Community
+
+- [Chef/Style/UseNodeNormal](docs/use_node_normal.md) – Avoid using `node.normal`; prefer `node.default` instead. Helps reduce persistent attributes in cookbooks.
+
+
+
 ## License and Copyright
 
 Copyright 2016-2021, Chef Software, Inc.
