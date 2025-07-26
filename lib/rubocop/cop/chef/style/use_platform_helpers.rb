@@ -30,11 +30,9 @@ module RuboCop
         #   # good
         #   node.default['foo'] = 'bar'
         #
-        class UseNodeNormal < Base
-          extend AutoCorrector
-
-          MSG = 'Avoid using node.normal. Use default or override instead.'
-
+        class UsePlatformHelpers < Base
+          MSG = 'Use platform? helpers instead of node["platform"] == "foo".'
+          
           def on_send(node)
             return unless node.receiver&.send_type?
             return unless node.receiver.source == 'node' && node.method_name == :normal
