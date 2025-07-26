@@ -1,2 +1,6 @@
 inherit_from:
   - cookstyle.yml
+
+Chef/Style/UseNodeNormal:
+  Enabled: true
+  VersionAdded: '7.42.0'
