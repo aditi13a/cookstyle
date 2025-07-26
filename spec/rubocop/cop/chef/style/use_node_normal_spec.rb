@@ -11,54 +11,50 @@ RSpec.describe RuboCop::Cop::Chef::Style::UsePlatformHelpers, :config do
 
   let(:config) { RuboCop::Config.new }
 
-  let(:msg) do
-    "Use the `platform?` or `platform_family?` helpers instead of manually comparing node['platform'] or node['platform_family'] for better readability and maintainability."
-  end
-
-  it 'registers an offense when checking platform using node[platform]' do
+  it 'registers an offense when checking platform using node[\'platform\']' do
     expect_offense(<<~RUBY)
       if node['platform'] == 'redhat'
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ #{msg}
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use the `platform?` or `platform_family?` helpers instead of manually comparing node['platform'] or node['platform_family'] for better readability and maintainability.
       end
     RUBY
   end
 
-  it 'registers an offense when checking platform using node[platform] for not equals' do
+  it 'registers an offense when checking platform using node[\'platform\'] for not equals' do
     expect_offense(<<~RUBY)
       if node['platform'] != 'redhat'
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ #{msg}
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use the `platform?` or `platform_family?` helpers instead of manually comparing node['platform'] or node['platform_family'] for better readability and maintainability.
       end
     RUBY
   end
 
-  it 'registers an offense when checking platform family using node[platform_family]' do
+  it 'registers an offense when checking platform family using node[\'platform_family\']' do
     expect_offense(<<~RUBY)
       if node['platform_family'] == 'rhel'
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ #{msg}
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use the `platform?` or `platform_family?` helpers instead of manually comparing node['platform'] or node['platform_family'] for better readability and maintainability.
       end
     RUBY
   end
 
-  it 'registers an offense when checking platform family with include? and array of values' do
+  it 'registers an offense when checking platform family with include? and an array of values' do
     expect_offense(<<~RUBY)
       if %w(rhel suse).include?(node['platform_family'])
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ #{msg}
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use the `platform?` or `platform_family?` helpers instead of manually comparing node['platform'] or node['platform_family'] for better readability and maintainability.
       end
     RUBY
   end
 
-  it 'registers an offense when checking platform family with include? and quoted array' do
+  it 'registers an offense when checking platform family with include? and a quoted array of values' do
     expect_offense(<<~RUBY)
       if ['rhel', some_variable].include?(node['platform_family'])
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ #{msg}
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use the `platform?` or `platform_family?` helpers instead of manually comparing node['platform'] or node['platform_family'] for better readability and maintainability.
       end
     RUBY
   end
 
-  it 'registers an offense when checking platform using node[platform].eql?()' do
+  it 'registers an offense when checking platform using node[\'platform\'].eql?()' do
     expect_offense(<<~RUBY)
       if node['platform'].eql?('ubuntu')
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ #{msg}
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use the `platform?` or `platform_family?` helpers instead of manually comparing node['platform'] or node['platform_family'] for better readability and maintainability.
       end
     RUBY
   end
