@@ -2,7 +2,8 @@
 
 require 'rubocop'
 require 'rubocop/rspec/support'
-require_relative '../../../../lib/rubocop/cop/chef/style/use_node_normal'
+require_relative '../../../../../lib/rubocop/cop/chef/style/use_node_normal'
+
 
 RSpec.describe RuboCop::Cop::Chef::Style::UseNodeNormal, :config do
   include RuboCop::RSpec::ExpectOffense
