@@ -179,6 +179,15 @@ Chef/Style/IncludeRecipeWithParentheses:
     - '**/metadata.rb'
     - '**/Berksfile'
 
+
+Chef/Style/UseNodeNormal:
+  Enabled: true
+  Description: 'Detect usage of node.normal and suggest node.default or node.override.'
+  VersionAdded: '7.0'
+  Exclude:
+    - spec/**/* # Exclude test files from being flagged
+
+
 ###############################
 # Chef/Correctness: Avoiding potential problems
 ###############################
