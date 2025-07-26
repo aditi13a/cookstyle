@@ -23,3 +23,4 @@ describe RuboCop::Cop::Chef::Style::UseNodeNormal do
     expect_no_offenses("node.override['foo'] = 'bar'")
   end
 end
+
