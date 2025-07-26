@@ -17,7 +17,6 @@ node.default['foo'] = 'bar'
 ```ruby
 
 node.normal['foo'] = 'bar'
-yaml
-Copy
-Edit
 ```
+
+
