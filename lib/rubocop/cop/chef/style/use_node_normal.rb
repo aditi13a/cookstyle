@@ -29,7 +29,7 @@ module RuboCop
             return unless node.receiver.receiver.source == 'node'
             return unless node.receiver.method_name == :normal
 
-            add_offense(node, message: MSG) do |corrector|
+            add_offense(node.loc.selector, message: MSG) do |corrector|
               corrector.replace(node.receiver.loc.selector, 'default')
             end
           end
