@@ -1,6 +1,6 @@
 require 'rubocop'
 require 'rubocop/rspec/support'
-require_relative '../../../../../../lib/rubocop/cop/chef/style/use_node_normal'
+require_relative File.expand_path('../../../../../../lib/rubocop/cop/chef/style/use_node_normal', __FILE__)
 
 RSpec.describe RuboCop::Cop::Chef::Style::UseNodeNormal, :config do
   include RuboCop::RSpec::ExpectOffense
