@@ -1,6 +1,16 @@
-require 'spec_helper'
+# frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Chef::Style::UseNodeNormal, :rubocop do
+require 'rubocop'
+require 'rubocop/rspec/support'
+require_relative '../../../../../../lib/rubocop/cop/chef/style/use_node_normal'
+
+RSpec.describe RuboCop::Cop::Chef::Style::UseNodeNormal, :config do
+  subject(:cop) { described_class.new(config) }
+
+  include RuboCop::RSpec::ExpectOffense
+
+  let(:config) { RuboCop::Config.new }
+
   it 'registers an offense when using node.normal' do
     expect_offense(<<~RUBY)
       node.normal['foo'] = 'bar'
