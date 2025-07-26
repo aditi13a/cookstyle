@@ -41,7 +41,7 @@ module RuboCop
         class UsePlatformHelpers < Base
           extend AutoCorrector
 
-          MSG = "Use platform? and platform_family? helpers to check a node's platform"
+          MSG = "Use the `platform?` or `platform_family?` helpers instead of manually comparing node['platform'] or node['platform_family'] for better readability and maintainability."
           RESTRICT_ON_SEND = [:==, :!=, :eql?, :include?].freeze
 
           def_node_matcher :platform_equals?, <<-PATTERN
