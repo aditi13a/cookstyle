@@ -14,9 +14,10 @@ RSpec.describe RuboCop::Cop::Chef::Style::UseNodeNormal, :config do
 
   it 'registers an offense when using node.normal' do
     expect_offense(<<~RUBY)
-      node.normal['foo'] = 'bar'
-           ^^^^^^ Avoid using node.normal. Use default or override instead.
-    RUBY
+  node.normal['foo'] = 'bar'
+            ^^^^^^^ Avoid using `node.normal`. It persists data across Chef runs and is discouraged. Use `node.default` or `node.override` instead.
+  RUBY
+
   end
 
   it 'does not register an offense for node.default' do
