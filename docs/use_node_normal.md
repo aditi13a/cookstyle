@@ -10,3 +10,14 @@ Prefer using `node.default` or `node.override` instead, as `node.normal` persist
 
 ```ruby
 node.default['foo'] = 'bar'
+
+```
+### Bad
+
+```ruby
+
+node.normal['foo'] = 'bar'
+yaml
+Copy
+Edit
+```
