@@ -15,69 +15,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# frozen_string_literal: true
+
 module RuboCop
   module Cop
     module Chef
       module Style
-        # Use the platform?() and platform_family?() helpers instead of node['platform] == 'foo' and node['platform_family'] == 'bar'. These helpers are easier to read and can accept multiple platform arguments, which greatly simplifies complex platform logic.
+        # Use default or override to set node attributes instead of normal.
         #
         # @example
+        #   # bad
+        #   node.normal['foo'] = 'bar'
         #
-        #   ### incorrect
-        #   node['platform'] == 'ubuntu'
-        #   node['platform_family'] == 'debian'
-        #   node['platform'] != 'ubuntu'
-        #   node['platform_family'] != 'debian'
-        #   %w(rhel suse).include?(node['platform_family'])
-        #   node['platform'].eql?('ubuntu')
+        #   # good
+        #   node.default['foo'] = 'bar'
         #
-        #   ### correct
-        #   platform?('ubuntu')
-        #   !platform?('ubuntu')
-        #   platform_family?('debian')
-        #   !platform_family?('debian')
-        #   platform_family?('rhel', 'suse')
-        #
-        class UsePlatformHelpers < Base
+        class UseNodeNormal < Base
           extend AutoCorrector
 
-          MSG = "Use the `platform?` or `platform_family?` helpers instead of manually comparing node['platform'] or node['platform_family'] for better readability and maintainability."
-          RESTRICT_ON_SEND = [:==, :!=, :eql?, :include?].freeze
-
-          def_node_matcher :platform_equals?, <<-PATTERN
-            (send (send (send nil? :node) :[] $(str {"platform" "platform_family"}) ) ${:== :!=} $str )
-          PATTERN
-
-          def_node_matcher :platform_include?, <<-PATTERN
-            (send $(array ...) :include? (send (send nil? :node) :[] $(str {"platform" "platform_family"})))
-          PATTERN
-
-          def_node_matcher :platform_eql?, <<-PATTERN
-          (send (send (send nil? :node) :[] $(str {"platform" "platform_family"}) ) :eql? $str )
-          PATTERN
+          MSG = 'Avoid using node.normal. Use default or override instead.'
 
           def on_send(node)
-            platform_equals?(node) do |type, operator, plat|
-              add_offense(node, severity: :refactor) do |corrector|
-                corrected_string = (operator == :!= ? '!' : '') + "#{type.value}?('#{plat.value}')"
-                corrector.replace(node, corrected_string)
-              end
-            end
+            return unless node.receiver&.send_type?
+            return unless node.receiver.source == 'node' && node.method_name == :normal
 
-            platform_include?(node) do |plats, type|
-              add_offense(node, severity: :refactor) do |corrector|
-                platforms = plats.values.map { |x| x.str_type? ? "'#{x.value}'" : x.source }
-                corrected_string = "#{type.value}?(#{platforms.join(', ')})"
-                corrector.replace(node, corrected_string)
-              end
-            end
-
-            platform_eql?(node) do |type, plat|
-              add_offense(node, severity: :refactor) do |corrector|
-                corrected_string = "#{type.value}?('#{plat.value}')"
-                corrector.replace(node, corrected_string)
-              end
-            end
+            add_offense(node.loc.selector, message: MSG)
           end
         end
       end
