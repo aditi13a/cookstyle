@@ -17,10 +17,6 @@ end
 
 
 
-
-end
-
-
   it 'autocorrects node.normal to node.default' do
     corrected = autocorrect_source("node.normal['foo'] = 'bar'")
     expect(corrected).to eq("node.default['foo'] = 'bar'")
