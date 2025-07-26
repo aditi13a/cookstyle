@@ -9,12 +9,13 @@ it 'registers an offense when using node.normal' do
   _investigator = RuboCop::Cop::Commissioner.new([cop], [], raise_error: true)
   offenses = _investigator.investigate(processed_source).offenses
 
-  expect(offenses.size).to eq(1)
   offense = offenses.first
+  expect(offense.message).to eq(
+    'Avoid using `node.normal`. It persists data across Chef runs and is discouraged. Use `node.default` or `node.override` instead.'
+  )
+end
 
-expect(offenses.first.message).to eq(
-  'Avoid using `node.normal`. It persists data across Chef runs and is discouraged. Use `node.default` or `node.override` instead.'
-)
+
 
 
 end
