@@ -1,24 +1,12 @@
-\# Chef/Style/UseNodeNormal
+# Chef/Style/UseNodeNormal
 
-
-
-Enable this cop to discourage the use of `node.normal` in Chef code. 
+Enable this cop to discourage the use of `node.normal` in Chef code.
 
 Prefer using `node.default` or `node.override` instead, as `node.normal` persists data between Chef runs and can cause unexpected behavior.
 
+## Examples
 
-
-\## Examples
-
-
-
-\### Bad
-
-
+### Good
 
 ```ruby
-
-node.normal\['foo'] = 'bar'
-
-
-
+node.default['foo'] = 'bar'
